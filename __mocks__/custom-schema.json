@@ -1,0 +1,13 @@
+{
+  "title": "GELF Schema",
+  "type": "object",
+  "properties": {
+    "test1": {
+      "type": "integer",
+      "source": "nested.mock"
+    },
+    "test2": {
+      "type": "string"
+    }
+  }
+}
