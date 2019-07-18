@@ -173,4 +173,17 @@ describe('pinoGelf', function () {
 
     pg.stdin.write(pinoCustomOutput + '\n')
   })
+
+  test('pino output with custom fields for readme example', done => {
+    const pg = cp.spawn('node', [pgPath, 'log', '-c', '__mocks__/readme-custom-schema-example.json', '-v'])
+    const pinoCustomOutput = '{"pid":16699,"hostname":"han","name":"pino-gelf-test-app","level":30,"time":1481840140708,"msg":"request completed","customField":"test","res":{"statusCode":304},"responseTime":8,"req":{"method":"GET","headers":{"host":"localhost:3000","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14"}},"v":1}'
+    const expected = '{"version":"1.1","host":"han","short_message":"request completed","full_message":"request completed","timestamp":1481840140.708,"level":6,"facility":"pino-gelf-test-app","_status_code":304,"_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14","customField":"test"}'
+
+    pg.stdout.on('data', data => {
+      expect(data.toString()).toEqual(expected)
+      pg.kill()
+      done()
+    })
+    pg.stdin.write(pinoCustomOutput + '\n')
+  })
 })
