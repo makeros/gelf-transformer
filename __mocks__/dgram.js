@@ -1,12 +1,12 @@
 const dgram = jest.genMockFromModule('dgram'); // eslint-disable-line
 
-function createSocket() {
+function createSocket () {
   return {
     send: () => {},
     close: () => {}
-  };
+  }
 }
 
-dgram.createSocket = createSocket;
+dgram.createSocket = createSocket
 
-module.exports = dgram;
+module.exports = dgram
