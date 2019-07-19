@@ -8,9 +8,7 @@
   },
   "preferGlobal": true,
   "scripts": {
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix",
-    "pretest": "eslint . --ext .js",
+    "pretest": "standard",
     "test": "jest"
   },
   "repository": {
@@ -34,7 +32,7 @@
     "through2": "^2.0.3"
   },
   "devDependencies": {
-    "eslint": "^5.7.0",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "standard": "^13.0.2"
   }
 }

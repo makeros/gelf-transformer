@@ -45,8 +45,8 @@ node your-app.js | pino-gelf log -e
 // Enable single custom field logging
 node your-app.js | pino-gelf log -c environment
 
-// Enable multiple custom field logging
-node your-app.js | pino-gelf log -c environment,colour
+// Enable multiple custom field logging using custom schema json file
+node your-app.js | pino-gelf log -c my_schema.json
 
 // Enable local output
 node your-app.js | pino-gelf log -v
@@ -66,6 +66,7 @@ Verbose Logging|`false`
 
 ## Example
 
+### Custom fields 
 Given the Pino log message (formatted as JSON for readability):
 ```
 {
@@ -75,38 +76,43 @@ Given the Pino log message (formatted as JSON for readability):
   "level":30,
   "time":1481840140708,
   "msg":"request completed",
-  "res":{
-    "statusCode":304,
-    "header":"HTTP/1.1 304 Not Modified\r\nX-Powered-By: Express\r\nETag: W/\"d-bNNVbesNpUvKBgtMOUeYOQ\"\r\nDate: Thu, 15 Dec 2016 22:15:40 GMT\r\nConnection: keep-alive\r\n\r\n"
-  },
+  "customField":"test",
+  "res":{"statusCode":304},
   "responseTime":8,
-  "environment":"dev",
-  "colour":"black",
   "req":{
-    "id":1,
     "method":"GET",
-    "url":"/",
     "headers":{
       "host":"localhost:3000",
-      "connection":"keep-alive",
-      "if-none-match":"W/\"d-bNNVbesNpUvKBgtMOUeYOQ\"",
-      "upgrade-insecure-requests":"1",
-      "accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-      "user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14",
-      "accept-language":"en-gb",
-      "dnt":"1",
-      "accept-encoding":"gzip, deflate"
+      "user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14"}
     },
-    "remoteAddress":"::1",
-    "remotePort":52829
-  },
   "v":1
 }
 ```
 
+Given custom schema json file (my_custom_schema.json):
+```
+{
+  "title": "GELF Schema",
+  "type": "object",
+  "properties": {
+    "_status_code": {
+      "type": "integer",
+      "source": "res.statusCode"
+    },
+    "_user_agent": {
+      "type": "string",
+      "source": "req.headers.user-agent" 
+    },
+    "customField": {
+      "type": "string"
+    }
+  }
+}
+
+```
 And the usage:
 ```
-node server.js | pino-gelf log -e -c environment,colour
+node server.js | pino-gelf log -e -c my_custom_schema.json
 ```
 
 Pino GELF will send the following message to your Graylog server (formatted here as JSON for readability):
@@ -116,24 +122,12 @@ Pino GELF will send the following message to your Graylog server (formatted here
   "host":"han",
   "short_message":"request completed",
   "full_message":"request completed",
-  "timestamp":1481840588.672,
+  "timestamp":1481840140.708,
   "level":6,
   "facility":"pino-gelf-test-app",
-  "req":{
-    "id":1,
-    "method":"GET",
-    "url":"/",
-    "headers":"{\"host\":\"localhost:3000\",\"accept-encoding\":\"gzip, deflate\",\"connection\":\"keep-alive\",\"upgrade-insecure-requests\":\"1\",\"accept\":\"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\",\"user-agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14\",\"accept-language\":\"en-gb\",\"dnt\":\"1\",\"cache-control\":\"max-age=0\"}",
-    "remoteAddress":"::1",
-    "remotePort":52843
-  },
-  "res":{
-    "statusCode":200,
-    "header":"\"HTTP/1.1 200 OK\r\nX-Powered-By: Express\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 13\r\nETag: W/\\"d-bNNVbesNpUvKBgtMOUeYOQ\\"\r\nDate: Thu, 15 Dec 2016 22:23:08 GMT\r\nConnection: keep-alive\r\n\r\n\""
-  },
-  "responseTime":9,
-  "colour":"black",
-  "environment":"dev"
+  "_status_code":304,
+  "_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14",
+  "customField":"test"
 }
 ```
 

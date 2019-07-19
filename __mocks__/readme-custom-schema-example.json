@@ -1,0 +1,17 @@
+{
+  "title": "GELF Schema",
+  "type": "object",
+  "properties": {
+    "_status_code": {
+      "type": "integer",
+      "source": "res.statusCode"
+    },
+    "_user_agent": {
+      "type": "string",
+      "source": "req.headers.user-agent" 
+    },
+    "customField": {
+      "type": "string"
+    }
+  }
+}
