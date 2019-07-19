@@ -10,7 +10,7 @@ function pinoOutput (msg, level) {
   return `{"level":${level},"time":1531171074631,"msg":"${msg}","pid":657,"hostname":"box","name":"app","v":1}`
 }
 
-describe('pinoGelf', function () {
+describe('pinoGelf in verbose mode', function () {
   test('no logs are processed when non-json message is passed to stdin', done => {
     const pg = cp.spawn('node', [pgPath, 'log', '-v'])
 
@@ -32,7 +32,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":6,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -46,7 +46,7 @@ describe('pinoGelf', function () {
     const expected = `{"version":"1.1","host":"box","short_message":"hello world world world world world world world world world world","full_message":"${msg}","timestamp":1531171074.631,"level":6,"facility":"app"}`
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -59,7 +59,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":7,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -72,7 +72,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":7,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -85,7 +85,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":4,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -98,7 +98,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":3,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -111,7 +111,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":2,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -124,7 +124,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":2,"facility":"app"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -138,7 +138,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":6,"facility":"app","req":{"method":"GET","url":"/","headers":"{\\"accept\\":\\"text/html\\"}"},"res":{"statusCode":304,"header":"\\"HTTP/1.1 304 Not Modified\\""},"responseTime":8}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -152,7 +152,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":6,"facility":"app","test1":666,"test2":"red"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -166,7 +166,7 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":6,"facility":"app","test2":"222"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
@@ -180,10 +180,31 @@ describe('pinoGelf', function () {
     const expected = '{"version":"1.1","host":"han","short_message":"request completed","full_message":"request completed","timestamp":1481840140.708,"level":6,"facility":"pino-gelf-test-app","_status_code":304,"_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14","customField":"test"}'
 
     pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected)
+      expect(data.toString()).toEqual(expected + '\n')
       pg.kill()
       done()
     })
     pg.stdin.write(pinoCustomOutput + '\n')
+  })
+
+  test('should output logs delimited with a new line', done => {
+    const pg = cp.spawn('node', [pgPath, 'log', '-v'])
+    const pinoCustomOutput = '{"pid":16699,"hostname":"han","name":"pino-gelf-test-app","level":30,"time":1481840140708,"msg":"request completed","customField":"test","res":{"statusCode":304},"responseTime":8,"req":{"method":"GET","headers":{"host":"localhost:3000","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14"}},"v":1}'
+    let result = ''
+    pg.stdout.on('data', data => {
+      result += data.toString()
+      // expect(dataStr.split(pinoCustomOutput)[1]).toEqual('\n')
+    })
+
+    pg.on('close', () => {
+      const newLines = result.match(/[\n]/g)
+      expect(newLines.length).toEqual(2)
+      done()
+      pg.kill()
+    })
+
+    pg.stdin.write(pinoCustomOutput + '\n')
+    pg.stdin.write(pinoCustomOutput + '\n')
+    pg.stdin.end()
   })
 })
