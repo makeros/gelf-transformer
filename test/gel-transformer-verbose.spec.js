@@ -10,7 +10,7 @@ function pinoOutput (msg, level) {
   return `{"level":${level},"time":1531171074631,"msg":"${msg}","pid":657,"hostname":"box","name":"app","v":1}`
 }
 
-describe('pinoGelf in verbose mode', function () {
+describe('gelf-transform in verbose mode', function () {
   test('no logs are processed when non-json message is passed to stdin', done => {
     const pg = cp.spawn('node', [pgPath, 'log', '-v'])
 
@@ -130,20 +130,6 @@ describe('pinoGelf in verbose mode', function () {
     })
 
     pg.stdin.write(pinoOutput('hello world', 60) + '\n')
-  })
-
-  test('pino output with express-pino-middleware option is transformed to gelf output', done => {
-    const pg = cp.spawn('node', [pgPath, 'log', '-e', '-v'])
-    const pinoExpressOutput = '{"level":30,"time":1531171074631,"msg":"hello world","res":{"statusCode":304,"header":"HTTP/1.1 304 Not Modified"},"responseTime":8,"req":{"method":"GET","url":"/","headers":{"accept":"text/html"}},"pid":657,"hostname":"box","name":"app","v":1}'
-    const expected = '{"version":"1.1","host":"box","short_message":"hello world","full_message":"hello world","timestamp":1531171074.631,"level":6,"facility":"app","req":{"method":"GET","url":"/","headers":"{\\"accept\\":\\"text/html\\"}"},"res":{"statusCode":304,"header":"\\"HTTP/1.1 304 Not Modified\\""},"responseTime":8}'
-
-    pg.stdout.on('data', data => {
-      expect(data.toString()).toEqual(expected + '\n')
-      pg.kill()
-      done()
-    })
-
-    pg.stdin.write(pinoExpressOutput + '\n')
   })
 
   test('pino output with custom fields (also nested) is transformed to gelf output', done => {
