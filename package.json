@@ -1,10 +1,10 @@
 {
-  "name": "pino-gelf",
-  "version": "1.1.4",
-  "description": "Convert Pino logs to GELF format and gzip ready for upload to Graylog",
+  "name": "gelf-transformer",
+  "version": "0.0.1",
+  "description": "Grab your json logs and convert them to GELF format",
   "main": "index.js",
   "bin": {
-    "pino-gelf": "index.js"
+    "gelf-transformer": "index.js"
   },
   "preferGlobal": true,
   "scripts": {
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pinojs/pino-gelf.git"
+    "url": "git+https://github.com/makeros/gelf-transformer"
   },
-  "author": "Donald Robertson <drobertson@findmypast.com>",
+  "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/pinojs/pino-gelf/issues"
+    "url": "https://github.com/makeros/gelf-transformer/issues"
   },
-  "homepage": "https://github.com/pinojs/pino-gelf#readme",
+  "homepage": "https://github.com/makeros/gelf-transformer#readme",
   "dependencies": {
     "commander": "^2.19.0",
     "fast-json-parse": "^1.0.3",

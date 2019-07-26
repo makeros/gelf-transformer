@@ -1,4 +1,6 @@
-# Pino GELF
+GELF Trasnformer
+---
+Based on [Pino Glef](https://github.com/pinojs/pino-gelf)
 
 Pino GELF (pino-gelf) is a transport for the [Pino](https://www.npmjs.com/package/pino) logger. Pino GELF receives Pino logs from stdin and transforms them into [GELF](http://docs.graylog.org/en/2.1/pages/gelf.html) format before sending them to a remote [Graylog](https://www.graylog.org) server via UDP.
 
