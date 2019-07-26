@@ -24,7 +24,8 @@ program
       maxChunkSize: this.maxChunkSize || 1420,
       port: this.port || 12201,
       verbose: this.verbose || false,
-      transportToGraylog: this.transportToGraylog || false
+      transportToGraylog: this.transportToGraylog || false,
+      messageField: 'msg'
     }
     gelfTransformer(opts)
   })
