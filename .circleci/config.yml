@@ -72,6 +72,9 @@ workflows:
           requires:
             - build
       - release:
+          requires:
+            - build
+            - test
           type: approval
           filters:  # using regex filters requires the entire branch to match
             branches:
