@@ -1,6 +1,6 @@
 {
   "name": "gelf-transformer",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "Grab your json logs and convert them to GELF format",
   "main": "index.js",
   "bin": {
@@ -9,11 +9,12 @@
   "preferGlobal": true,
   "scripts": {
     "pretest": "standard",
-    "test": "jest"
+    "test": "jest",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/makeros/gelf-transformer"
+    "url": "https://github.com/makeros/gelf-transformer"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -33,9 +34,10 @@
   },
   "devDependencies": {
     "jest": "^23.6.0",
-    "standard": "^13.0.2"
+    "standard": "^13.0.2",
+    "semantic-release": "^15.13.24"
   },
-  "engines" : {
-    "node" : ">=10"
+  "engines": {
+    "node": ">=10"
   }
 }

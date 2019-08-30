@@ -61,7 +61,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - echo "-- Release will be here --"
+      - run: npx semantic-release
 
 workflows:
   version: 2
@@ -71,11 +71,13 @@ workflows:
       - test:
           requires:
             - build
+      - release_approval:
+          type: approval
       - release:
           requires:
             - build
             - test
-          type: approval
+            - release_approval
           filters:  # using regex filters requires the entire branch to match
             branches:
               only:  # only branches matching the below regex filters will run
