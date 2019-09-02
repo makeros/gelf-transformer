@@ -6,7 +6,7 @@ GELF transformer is a tool which receives json formatted logs from the stdin and
 It can also use a custom [mapping schema](###CustomFields)</sup> to fill the output log with more data.
 
 
->[![CircleCI](https://circleci.com/gh/makeros/gelf-transformer/tree/master.svg?style=svg)](https://circleci.com/gh/makeros/gelf-transformer/tree/master)
+>[![CircleCI](https://img.shields.io/circleci/build/github/makeros/gelf-transformer/master)](https://circleci.com/gh/makeros/gelf-transformer/tree/master) [![NPM](https://img.shields.io/npm/v/gelf-transformer)](https://www.npmjs.com/package/gelf-transformer) ![NPM download](https://img.shields.io/npm/dw/gelf-transformer)
 
 
 ### Contents
