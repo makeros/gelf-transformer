@@ -1,16 +1,20 @@
-GELF Transformer
+GELF Transformer (ver. 2)
 ---
-This project is based on [Pino Glef](https://github.com/pinojs/pino-gelf)
+This project is based on [Pino Gelf](https://github.com/pinojs/pino-gelf)
 
 GELF transformer is a tool which receives json formatted logs from the stdin and transforms them into GELF format [GELF](https://docs.graylog.org/en/3.0/pages/gelf.html)
 It can also use a custom [mapping schema](###CustomFields)</sup> to fill the output log with more data.
+
+
+>[![CircleCI](https://circleci.com/gh/makeros/gelf-transformer/tree/master.svg?style=svg)](https://circleci.com/gh/makeros/gelf-transformer/tree/master)
+
 
 ### Contents
 
 * [Installation](##Installation)
 * [Usage](##Usage)
 * [Getting Started](##GettingStarted)
-* [Example I/O](##Example)
+* [Examples](##Examples)
 * [GELF](##GELF)
 * [Log Level Mapping](##LogLevelMapping)
 * [Acknowledgements](##Acknowledgements)
@@ -34,6 +38,10 @@ node your-app.js | gelf-transformer log <options>
 ## Getting Started
 
 ### command `log`
+
+```
+gelf-transformer log --help
+```
 
 Switch | Description | Default | Notes
 ---|---|---|---

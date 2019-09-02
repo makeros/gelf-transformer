@@ -1,19 +1,8 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:10.15.2
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
 
     steps:
@@ -44,7 +33,6 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: npm test
 
@@ -59,13 +47,12 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: npx semantic-release
 
 workflows:
   version: 2
-  build_and_test:
+  build_test__release:
     jobs:
       - build
       - test:
@@ -73,12 +60,16 @@ workflows:
             - build
       - release_approval:
           type: approval
+          filters:
+            branches:
+              only:
+                - master
       - release:
           requires:
             - build
             - test
             - release_approval
-          filters:  # using regex filters requires the entire branch to match
+          filters:
             branches:
-              only:  # only branches matching the below regex filters will run
+              only:
                 - master

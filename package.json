@@ -16,26 +16,35 @@
     "type": "git",
     "url": "https://github.com/makeros/gelf-transformer"
   },
-  "author": "",
+  "author": "arek czogala <mail@arekczogala.pl>",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/makeros/gelf-transformer/issues"
   },
+  "keywords": [
+    "gelf",
+    "transformer",
+    "graylog",
+    "log",
+    "logger",
+    "pino log",
+    "pipeline logs",
+    "logs"
+  ],
   "homepage": "https://github.com/makeros/gelf-transformer#readme",
   "dependencies": {
-    "commander": "^2.19.0",
+    "commander": "^3.0.1",
     "fast-json-parse": "^1.0.3",
-    "fast-json-stringify": "^1.9.1",
-    "lodash": "^4.17.11",
+    "fast-json-stringify": "^1.15.4",
+    "lodash": "^4.17.15",
     "pump": "^3.0.0",
-    "readable-stream": "^3.0.6",
-    "split2": "^3.0.0",
-    "through2": "^2.0.3"
+    "readable-stream": "^3.4.0",
+    "split2": "^3.1.1",
+    "through2": "^3.0.1"
   },
   "devDependencies": {
     "jest": "^23.6.0",
-    "standard": "^13.0.2",
-    "semantic-release": "^15.13.24"
+    "standard": "^13.0.2"
   },
   "engines": {
     "node": ">=10"
