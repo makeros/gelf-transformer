@@ -6,3 +6,7 @@ test/
 .eslintrc.yml
 .gitignore
 .npmignore
+__mocks__
+.vscode/
+.circleci/
+.DS_Store
