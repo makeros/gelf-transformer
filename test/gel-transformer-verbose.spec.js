@@ -119,7 +119,8 @@ describe('gelf-transform in verbose mode', function () {
 
   test('should output logs delimited with a new line', done => {
     const pg = cp.spawn('node', [pgPath, 'log', '-v'])
-    const consoleCustomOutput = '{"pid":16699,"hostname":"han","name":"pino-gelf-test-app","level":30,"time":1481840140708,"msg":"request completed","customField":"test","res":{"statusCode":304},"responseTime":8,"req":{"method":"GET","headers":{"host":"localhost:3000","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14"}},"v":1}'
+    const consoleCustomOutput = '{"pid":16699,"hostname":"han","name":"pino-gelf-test-app1","level":30,"time":1481840140708,"msg":"request completed","customField":"test","res":{"statusCode":304},"responseTime":8,"req":{"method":"GET","headers":{"host":"localhost:3000","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14"}},"v":1}'
+    const consoleCustomOutput2 = '{"pid":666,"hostname":"han","name":"pino-gelf-test-app2","level":30,"time":1481840140708,"msg":"request completed","customField":"test","res":{"statusCode":304},"responseTime":8,"req":{"method":"GET","headers":{"host":"localhost:3000","user-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14"}},"v":1}'
 
     pg.stdout.on('data', dataSpy)
 
@@ -130,7 +131,7 @@ describe('gelf-transform in verbose mode', function () {
     })
 
     pg.stdin.write(consoleCustomOutput + '\n')
-    pg.stdin.end(consoleCustomOutput + '\n')
+    pg.stdin.end(consoleCustomOutput2 + '\n')
   })
 
   test('should inform that there is no message field in the incomming log', done => {

@@ -35,17 +35,15 @@
   "dependencies": {
     "commander": "^3.0.1",
     "fast-json-parse": "^1.0.3",
-    "fast-json-stringify": "^1.15.4",
+    "fast-json-stringify": "^2.4.2",
     "lodash.get": "^4.4.2",
     "lodash.pick": "^4.4.0",
-    "pump": "^3.0.0",
-    "readable-stream": "^3.4.0",
-    "split2": "^3.1.1",
-    "through2": "^3.0.1"
+    "readable-stream": "^3.6.0",
+    "split2": "^3.2.2"
   },
   "devDependencies": {
-    "jest": "^23.6.0",
-    "standard": "^13.0.2"
+    "jest": "^26.6.3",
+    "standard": "^16.0.3"
   },
   "engines": {
     "node": ">=10"
