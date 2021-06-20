@@ -10,7 +10,8 @@
   "scripts": {
     "pretest": "standard",
     "test": "jest",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,6 @@
     "standard": "^16.0.3"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   }
 }
