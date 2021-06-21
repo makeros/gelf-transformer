@@ -1,44 +1,44 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:10.15.2
-    working_directory: ~/repo
+  # build:
+  #   docker:
+  #     - image: circleci/node:10.15.2
+  #   working_directory: ~/repo
 
-    steps:
-      - checkout
+  #   steps:
+  #     - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+  #     # Download and cache dependencies
+  #     - restore_cache:
+  #         keys:
+  #           - v1-dependencies-{{ checksum "package.json" }}
+  #           # fallback to using the latest cache if no exact match is found
+  #           - v1-dependencies-
 
-      - run: npm install
+  #     - run: npm install
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+  #     - save_cache:
+  #         paths:
+  #           - node_modules
+  #         key: v1-dependencies-{{ checksum "package.json" }}
 
-  test:
-    docker:
-      - image: circleci/node:10.15.2
+  # test:
+  #   docker:
+  #     - image: circleci/node:10.15.2
 
-    working_directory: ~/repo
+  #   working_directory: ~/repo
 
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-      - run: npm test
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys:
+  #           - v1-dependencies-{{ checksum "package.json" }}
+  #           - v1-dependencies-
+  #     - run: npm test
 
   release:
     docker:
-      - image: circleci/node:12.18.0
+      - image: circleci/node:14.17.1
 
     working_directory: ~/repo
 
@@ -54,10 +54,10 @@ workflows:
   version: 2
   build_test__release:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      # - build
+      # - test:
+      #     requires:
+      #       - build
       - release_approval:
           type: approval
           filters:
@@ -66,7 +66,7 @@ workflows:
                 - master
       - release:
           requires:
-            - test
+            # - test
             - release_approval
           filters:
             branches:

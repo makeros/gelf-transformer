@@ -10,7 +10,8 @@
   "scripts": {
     "pretest": "standard",
     "test": "jest",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
@@ -37,7 +38,6 @@
     "fast-json-parse": "^1.0.3",
     "fast-json-stringify": "^2.4.2",
     "lodash.get": "^4.4.2",
-    "lodash.pick": "^4.4.0",
     "readable-stream": "^3.6.0",
     "split2": "^3.2.2"
   },
@@ -46,6 +46,6 @@
     "standard": "^16.0.3"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   }
 }
