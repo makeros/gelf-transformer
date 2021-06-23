@@ -11,7 +11,8 @@
     "pretest": "standard",
     "test": "jest",
     "semantic-release": "semantic-release",
-    "lint": "standard"
+    "lint": "standard",
+    "jest": "jest"
   },
   "repository": {
     "type": "git",
