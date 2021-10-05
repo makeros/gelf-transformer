@@ -14,9 +14,11 @@ function start () {
   return server
 }
 
-function stop () {
-  server.close()
-  onMessage.mockReset()
+function stop (cb) {
+  server.close(function () {
+    onMessage.mockReset()
+    cb && cb()
+  })
 }
 
 module.exports = {

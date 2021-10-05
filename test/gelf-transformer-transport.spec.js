@@ -1,4 +1,4 @@
-/* globals describe, test, expect, afterEach, beforeEach */
+/* globals describe, it, expect, afterEach, beforeEach */
 const cp = require('child_process')
 const path = require('path')
 const { unzip } = require('zlib')
@@ -6,64 +6,42 @@ const mockServer = require(path.resolve('__mocks__/udp-server.js'))
 
 const gtPath = path.join(__dirname, '..', 'index.js')
 
-function logsOutput (msg, level) {
-  return `{"level":${level},"time":1531171074631,"msg":"${msg}","pid":657,"hostname":"box","name":"app","v":1}`
-}
-
 describe('gelf-transform in transport mode', function () {
   let server
+  let gelfTransformer
   beforeEach(() => {
+    gelfTransformer = cp.spawn('node', [gtPath, 'log', '-t'])
     server = mockServer.start()
   })
 
-  afterEach(() => {
-    mockServer.stop()
+  afterEach((done) => {
+    mockServer.stop(function () {
+      gelfTransformer.kill()
+      done()
+    })
   })
 
-  test('should send logs to the graylog server when transport is enabled', done => {
-    const gt = cp.spawn('node', [gtPath, 'log', '-t'])
-
+  it('should send logs to the graylog server when transport is enabled', done => {
+    const result = []
+    let callsCounter = 0
     server.on('message', (msg, remote) => {
       unzip(msg, function (err, buffer) {
         if (err) {
-          gt.kill()
           return done(err)
         }
 
-        const result = buffer.toString()
-        expect(mockServer.onMessage).toBeCalledTimes(1)
-        expect(result).toEqual('{"version":"1.1","host":"box","short_message":"log","full_message":"log","timestamp":1531171074.631,"level":6,"facility":"app"}')
+        result.push(buffer.toString())
+        callsCounter++
 
-        gt.kill()
-        done()
-      })
-    })
-
-    gt.stdin.write(logsOutput('log', '30') + '\n')
-  })
-
-  test('should not send logs to graylog', done => {
-    const gt = cp.spawn('node', [gtPath, 'log'])
-    const gtLog = cp.spawn('node', [gtPath, 'log', '-t'])
-
-    server.on('message', (msg, remote) => {
-      unzip(msg, function (err, buffer) {
-        if (err) {
-          gt.kill()
-          gtLog.kill()
-          return done(err)
+        if (callsCounter === 2) {
+          expect(result[0]).toEqual('{"version":"1.1","host":"box","short_message":"log1","full_message":"log1","timestamp":1531171074,"level":6,"facility":"app"}')
+          expect(result[1]).toEqual('{"version":"1.1","host":"box","short_message":"log2","full_message":"log2","timestamp":1531171074,"level":6,"facility":"app"}')
+          done()
         }
-
-        const result = buffer.toString()
-        expect(mockServer.onMessage).toBeCalledTimes(1)
-        expect(result).toEqual('{"version":"1.1","host":"box","short_message":"available","full_message":"available","timestamp":1531171074.631,"level":6,"facility":"app"}')
-        gt.kill()
-        gtLog.kill()
-        done()
       })
     })
 
-    gt.stdin.write(logsOutput('not_available', '30') + '\n')
-    gtLog.stdin.write(logsOutput('available', '30') + '\n')
-  })
+    gelfTransformer.stdin.write('{"level":30,"time":1531171074,"msg":"log1","pid":657,"hostname":"box","name":"app","v":1}' + '\n')
+    gelfTransformer.stdin.write('{"level":30,"time":1531171074,"msg":"log2","pid":657,"hostname":"box","name":"app","v":1}' + '\n')
+  }, 10000)
 })
