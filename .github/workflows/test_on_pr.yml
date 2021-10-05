@@ -1,0 +1,36 @@
+name: Test Pull Request into master branch
+
+on:
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [12.18.0, 14.17.1]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Cache Node.js modules
+      uses: actions/cache@v2
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: |
+          **/node_modules
+        key: ${{ runner.OS }}-${{ matrix.node-version }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-${{ matrix.node-version }}-node-
+          ${{ runner.OS }}-${{ matrix.node-version }}-
+    - run:
+         npm ci
+      env:
+        CI: true
+    - run: npm run lint
+    - run: npm run test
+  
