@@ -7,7 +7,7 @@ jest.mock('dgram')
 const pgPath = path.join(__dirname, '..', 'index.js')
 
 const consoleOutput = function (msg, level) {
-  return `{"level":${level},"time":1531171074631,"msg":"${msg}","pid":657,"hostname":"box","name":"app","v":1}`
+  return `{"level":${level},"timestamp":1531171074,"msg":"${msg}","pid":657,"hostname":"box","name":"app","v":1}`
 }
 
 describe('gelf-transform in verbose mode', function () {
@@ -37,7 +37,7 @@ describe('gelf-transform in verbose mode', function () {
     pg.stdin.end('this is not json\n')
   })
 
-  test('logger output output is transformed to gelf output', done => {
+  test.only('logger output is transformed to gelf output', done => {
     const pg = cp.spawn('node', [pgPath, 'log', '-v'])
 
     pg.stdout.on('data', dataSpy)
@@ -49,7 +49,7 @@ describe('gelf-transform in verbose mode', function () {
       done()
     })
 
-    pg.stdin.end(consoleOutput('hello world', 30) + '\n')
+    pg.stdin.end(consoleOutput('hello world 666', 30) + '\n')
   })
 
   test('short message is trimmed down', done => {
@@ -71,7 +71,7 @@ describe('gelf-transform in verbose mode', function () {
 
   test('logger output with custom fields (also nested) is transformed to gelf output', done => {
     const pg = cp.spawn('node', [pgPath, 'log', '-c', '__mocks__/custom-schema.json', '-v'])
-    const consoleCustomOutput = '{"level":30,"time":1531171074631,"msg":"hello world","nested":{"mock":666},"test2":"red","pid":657,"hostname":"box","name":"app","v":1}'
+    const consoleCustomOutput = '{"level":30,"time":1531171074.631,"msg":"hello world","nested":{"mock":666},"test2":"red","pid":657,"hostname":"box","name":"app","v":1}'
 
     pg.stdout.on('data', dataSpy)
 
@@ -87,7 +87,7 @@ describe('gelf-transform in verbose mode', function () {
 
   test('logger output with custom fields should ignore mismatched type fields', done => {
     const pg = cp.spawn('node', [pgPath, 'log', '-c', '__mocks__/custom-schema.json', '-v'])
-    const consoleCustomOutput = '{"level":30,"time":1531171074631,"msg":"hello world","nested":{"mock":"this_should_be_a_number"},"test2":222,"pid":657,"hostname":"box","name":"app","v":1}'
+    const consoleCustomOutput = '{"level":30,"time":1531171074.631,"msg":"hello world","nested":{"mock":"this_should_be_a_number"},"test2":222,"pid":657,"hostname":"box","name":"app","v":1}'
 
     pg.stdout.on('data', dataSpy)
 
@@ -148,7 +148,7 @@ describe('gelf-transform in verbose mode', function () {
       done()
     })
 
-    pg.stdin.end('{"level":30,"time":1531171074631,"pid":657,"hostname":"box","name":"app","v":1}\n')
+    pg.stdin.end('{"level":30,"time":1531171074.631,"pid":657,"hostname":"box","name":"app","v":1}\n')
   })
 
   describe('log levels transformations', () => {

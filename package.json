@@ -37,7 +37,7 @@
   "dependencies": {
     "commander": "^3.0.1",
     "fast-json-parse": "^1.0.3",
-    "fast-json-stringify": "^2.4.2",
+    "fast-json-stringify": "2.7.6",
     "lodash.get": "^4.4.2",
     "readable-stream": "^3.6.0",
     "split2": "^3.2.2"
